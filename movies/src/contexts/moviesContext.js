@@ -130,6 +130,7 @@ const MoviesContextProvider = (props) => {
         setPlaylist(newToPlay);
     };
     const removeFromPlaylist = (movie) => {
+
         setPlaylist(playlist.filter(
             (mId) => mId !== movie.id
         ))
@@ -148,16 +149,7 @@ const MoviesContextProvider = (props) => {
                 follows,
                 addToFollows,
                 removeFromFollows,
-                handleLogin,
-                handleRegister,
-                getPassword,
-                getEmail,
-                isLogin,
-                email,
-                logout,
-                googleLogin,
                 error,
-                handlePageChange,
                 page,
             }}
         >

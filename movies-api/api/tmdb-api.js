@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
 
-export const getUpcomingMovies = async () => {
+export const getUpcomingMovies = async (args) => {
     try {
+        const [,page]=args.queryKey;
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&page=${page}`
         );
 
         if (!response.ok) {

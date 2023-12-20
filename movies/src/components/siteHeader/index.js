@@ -13,6 +13,7 @@ import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {MoviesContext} from "../../contexts/moviesContext";
 import Avatar from '@mui/material/Avatar';
+import {AuthContext} from "../../contexts/authContext";
 
 const Offset = styled('div')(({theme}) => theme.mixins.toolbar);
 
@@ -27,7 +28,7 @@ const SiteHeader = ({history}) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const navigate = useNavigate();
-    const {isLogin, email, logout} = useContext(MoviesContext);
+    const {isAuthenticated, userName, logout} = useContext(AuthContext);
 
     const menuOptions = [
         {label: "Home", path: "/"},
@@ -92,11 +93,11 @@ const SiteHeader = ({history}) => {
                             >
                                 <MenuIcon/>
                             </IconButton>
-                            {isLogin ?
+                            {isAuthenticated ?
                                 <IconButton>
                                     <Avatar onClick={() => {
                                         logout()
-                                    }}>  {email[0].toUpperCase()}</Avatar>
+                                    }}>  {userName[0].toUpperCase()}</Avatar>
                                 </IconButton>
                                 :
                                 <Button
@@ -208,9 +209,9 @@ const SiteHeader = ({history}) => {
                                     </MenuItem>
                                 ))}
                             </Menu>
-                            {isLogin ? <><IconButton onClick={handleUserMenuClick}>
+                            {isAuthenticated ? <><IconButton onClick={handleUserMenuClick}>
                                     <Avatar>
-                                        {email[0].toUpperCase()}
+                                        {userName[0].toUpperCase()}
                                     </Avatar></IconButton>
                                     <Menu id="UserMenu"
                                           anchorEl={userMenuAnchorEl}

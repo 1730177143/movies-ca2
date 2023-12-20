@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, TextField, Grid, Paper, Typography} from '@mui/material';
-import {useNavigate} from "react-router-dom";
+import { Navigate,useLocation, useNavigate} from "react-router-dom";
 import {MoviesContext} from "../../contexts/moviesContext";
+import { AuthContext } from '../../contexts/authContext';
 import GoogleIcon from '@mui/icons-material/Google';
 import Alert from "@mui/material/Alert";
 
 function Login() {
-    const context = useContext(MoviesContext);
-    const {email, password, error} = useContext(MoviesContext);
+    const context = useContext(AuthContext);
+    const {userName,password, error} = useContext(AuthContext);
     const navigate = useNavigate();
     const registerButton = () => {
         navigate("/register", {replace: true});
@@ -25,13 +26,14 @@ function Login() {
                         context.handleLogin();
                     }}>
                         <TextField
-                            label="email"
-                            type="email"
+                            label="userName"
+                            type="userName"
                             fullWidth
                             margin="normal"
-                            value={email}
-                            onChange={(e) => context.getEmail(e.target.value)}
+                            value={userName}
+                            onChange={(e) => context.getUserName(e.target.value)}
                         />
+
                         <TextField
                             label="password"
                             type="password"
