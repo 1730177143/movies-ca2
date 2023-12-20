@@ -1,5 +1,5 @@
-import React, { useState, createContext } from "react";
-import { login, signup } from "../api/movies-api";
+import React, {useState, createContext} from "react";
+import {login, signup} from "../api/movies-api";
 import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
@@ -19,7 +19,9 @@ const AuthContextProvider = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
+    const [passwordAgain, setPasswordAgain] = useState("");
+    const [registered, setRegistered] = useState(false);
     //Function to put JWT token in local storage.
     const setToken = (data) => {
         localStorage.setItem("token", data);
@@ -35,8 +37,8 @@ const AuthContextProvider = (props) => {
         }
     };
 
-    const register = async (username, password) => {
-        const result = await signup(username, password);
+    const register = async (username, password, email) => {
+        const result = await signup(username, password, email);
         console.log(result.code);
         return (result.code === 201);
     };
@@ -51,11 +53,14 @@ const AuthContextProvider = (props) => {
     const getPassword = (password) => {
         setPassword(password);
     }
+    const getPasswordAgain = (password) => {
+        setPasswordAgain(password);
+    }
     const getUserName = (username) => {
         setUserName(username);
     }
     const googleLogin = async () => {
-        setError('');
+        setError(null);
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
@@ -68,12 +73,30 @@ const AuthContextProvider = (props) => {
             console.error("Google login in failed:", error);
         }
     }
-    const handleRegister = async () => {
+    const handleRegister =  async () => {
         try {
-            setError('');
-            await createUserWithEmailAndPassword(auth, email, password);
+            setError(null);
+            let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+            const validPassword = passwordRegEx.test(password);
+            console.log(passwordAgain, validPassword);
+            if (email === '') {
+                throw new Error("Email cannot be empty.");
+            }
+            if (password !== passwordAgain) {
+                throw new Error("Passwords do not match.");
+            }
 
-            navigate("/login", {replace: true});
+            if (!validPassword) {
+                throw new Error("Invalid password format.");
+            }
+            await register(userName, password, email);
+            setRegistered(true)
+            if (registered) {
+                navigate("/login", {replace: true});
+            } else {
+                throw new Error("Registration failed. User's name has been used.");
+            }
+
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setError("This email has already been registered.");
@@ -82,15 +105,17 @@ const AuthContextProvider = (props) => {
                 setError("Password should be at least 6 characters");
                 console.error("Password should be at least 6 characters");
             } else {
-                console.error("Authentication failed:", error);
+                setError(error.message);
+                console.error("Registration error:", error.message);
             }
         }
     };
 
+
     const handleLogin = async () => {
         try {
-            setError('');
-            authenticate(userName, password);
+            setError(null);
+            await authenticate(userName, password);
             setIsAuthenticated(true);
             navigate("/", {replace: true});
 
@@ -128,6 +153,8 @@ const AuthContextProvider = (props) => {
                 handleLogin,
                 handleRegister,
                 getUserName,
+                getPasswordAgain,
+                error
             }}
         >
             {props.children}

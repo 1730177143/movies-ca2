@@ -43,7 +43,7 @@ function Login() {
                             onChange={(e) => context.getPassword(e.target.value)}
                         />
                         {<Typography color="error">
-                            {error === '' ? null : <Alert severity="error">{error}</Alert>}
+                            {error && <Alert severity="error">{error}</Alert>}
                         </Typography>}
                         <Button
                             type="submit"

@@ -1,13 +1,15 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Button, TextField, Grid, Paper, Typography} from '@mui/material';
-
-import {MoviesContext} from "../../contexts/moviesContext";
 import Alert from '@mui/material/Alert';
+import {AuthContext} from "../../contexts/authContext";
+import {Navigate} from "react-router-dom";
 
 function Register() {
-    const context = useContext(MoviesContext);
-    const {email, password, error} = useContext(MoviesContext);
-
+    const context = useContext(AuthContext);
+    const {userName, email, password, error, passwordAgain, registered} = useContext(AuthContext);
+    if (registered === true) {
+        return <Navigate to="/login"/>;
+    }
 
     return (
         <Grid container style={{minHeight: '100vh'}}>
@@ -20,6 +22,14 @@ function Register() {
                         e.preventDefault();
                         context.handleRegister(e);
                     }}>
+                        <TextField
+                            label="userName"
+                            type="userName"
+                            fullWidth
+                            margin="normal"
+                            value={userName}
+                            onChange={(e) => context.getUserName(e.target.value)}
+                        />
                         <TextField
                             label="email"
                             type="email"
@@ -36,8 +46,16 @@ function Register() {
                             value={password}
                             onChange={(e) => context.getPassword(e.target.value)}
                         />
+                        <TextField
+                            label="passwordAgain"
+                            type="password"
+                            fullWidth
+                            margin="normal"
+                            value={passwordAgain}
+                            onChange={(e) => context.getPasswordAgain(e.target.value)}
+                        />
                         {<Typography color="error">
-                            {error === '' ? null : <Alert severity="error">{error}</Alert>}
+                            {error && <Alert severity="error">{error}</Alert>}
                         </Typography>}
                         <Button
                             type="submit"
