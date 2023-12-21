@@ -187,6 +187,21 @@ router.delete('/favourites/:userId', async (req, res) => {
         res.status(500).json({success: false, message: 'Internal server error.'});
     }
 });
+
+router.get('/follows/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+        res.status(200).json({ follows: user.follows });
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ msg: "Error fetching user" });
+    }
+});
 router.post('/follows/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;

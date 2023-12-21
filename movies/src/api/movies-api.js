@@ -108,3 +108,42 @@ export const getFavourites = async (userId) => {
     }
     return response.json();
 }
+export const addToFollows = async (userId, personId) => {
+    console.log(userId, personId);
+    const response = await fetch(`http://localhost:8080/api/users/follows/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({personId: personId})
+    });
+    if (!response.ok) {
+        throw new Error('Could not add to follows');
+    }
+    return response.json();
+};
+export const removeFollows = async (userId, personId) => {
+    const response = await fetch(`http://localhost:8080/api/users/follows/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({personId: personId})
+    });
+    if (!response.ok) {
+        throw new Error('Could not remove from follows');
+    }
+    return response.json();
+}
+export const getFollows = async (userId) => {
+    const response = await fetch(`http://localhost:8080/api/users/follows/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Could not get follows');
+    }
+    return response.json();
+}

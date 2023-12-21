@@ -7,6 +7,9 @@ import {
     addToFavourites as apiAddToFavourites,
     removeFromFavourites as apiRemoveFromFavourites,
     getFavourites,
+    addToFollows as apiAddToFollows,
+    removeFollows as apiRemoveFollows,
+    getFollows,
 } from "../api/movies-api";
 import {useAuth} from './useAuth';
 
@@ -25,10 +28,10 @@ const MoviesContextProvider = (props) => {
         setPage(value);
     };
 
-    const loadProfile = () => {
-        getAllPlaylist();
-        getAllFavorites();
-        // getAllFollows();
+    const loadProfile = async () => {
+        await getAllPlaylist();
+        await getAllFavorites();
+        await getAllFollows();
     }
     const getAllFavorites = async () => {
         const result = await getFavourites(userId);
@@ -54,20 +57,25 @@ const MoviesContextProvider = (props) => {
         setMyReviews({...myReviews, [movie.id]: review})
     };
 
+    const getAllFollows = async () => {
+        const result = await getFollows(userId);
+        await setFollows(result.follows);
+        console.log('getAllFollows', follows);
+    }
 
-    const addToFollows = (actor) => {
-        let newFollows = [];
+    const addToFollows = async (actor) => {
         if (!follows.includes(actor.id)) {
-            newFollows = [...follows, actor.id];
-        } else {
-            newFollows = [...follows];
+            try {
+                await apiAddToFollows(userId, actor.id);
+                await getAllFollows()
+            } catch (error) {
+                console.error(error);
+            }
         }
-        setFollows(newFollows)
     };
-    const removeFromFollows = (actor) => {
-        setFollows(follows.filter(
-            (aId) => aId !== actor.id
-        ))
+    const removeFromFollows = async (actor) => {
+        await apiRemoveFollows(userId, actor.id);
+        await getAllFollows()
     };
     const getAllPlaylist = async () => {
         const result = await getPlaylist(userId);
