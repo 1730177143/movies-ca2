@@ -45,6 +45,7 @@ const SiteHeader = ({history}) => {
         {label: "Favorites", path: "/movies/favorites"},
         {label: "Playlist", path: "/movies/playlist"},
         {label: "Follows", path: "/actors/follows"},
+        {label: "Reviews", path: "/reviews"},
     ]
     const handleMenuSelect = (pageURL) => {
         navigate(pageURL, {replace: true});

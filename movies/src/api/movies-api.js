@@ -109,7 +109,6 @@ export const getFavourites = async (userId) => {
     return response.json();
 }
 export const addToFollows = async (userId, personId) => {
-    console.log(userId, personId);
     const response = await fetch(`http://localhost:8080/api/users/follows/${userId}`, {
         method: 'POST',
         headers: {
@@ -147,3 +146,41 @@ export const getFollows = async (userId) => {
     }
     return response.json();
 }
+
+export const getReviewsByID = async (movieId) => {
+    const response = await fetch(`http://localhost:8080/api/reviews/${movieId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Could not get reviews by movieId');
+    }
+    return response.json();
+};
+export const getReviews = async () => {
+    const response = await fetch(`http://localhost:8080/api/reviews`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Could not get reviews');
+    }
+    return response.json();
+};
+export const postReview = async (author, review, rating, movieId) => {
+    const response = await fetch('http://localhost:8080/api/reviews', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({author: author, review: review, rating: rating, movieId: movieId})
+    });
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};

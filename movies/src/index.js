@@ -26,7 +26,7 @@ const ActorPage = lazy(() => import("./pages/actorDetailsPage"));
 const MovieCreditsPage = lazy(() => import("./pages/movieCreditsPage"));
 const CreditsPage = lazy(() => import("./pages/creditsPage"));
 const FollowsPage = lazy(() => import("./pages/followsPage"));
-
+const ReviewsPage = lazy(() => import("./pages/reviewsPage"));
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -51,7 +51,7 @@ const App = () => {
                                     <Route path="/movies/playlist" element={<PlaylistPage/>}/>
                                     <Route path="/reviews/form" element={<AddMovieReviewPage/>}/>
                                 </Route>
-                                <Route path="/reviews/form" element={<AddMovieReviewPage/>}/>
+                                <Route path="reviews" element={<ReviewsPage/>}/>
                                 <Route path="/movies/upcoming" element={<UpcomingMoviesPage/>}/>
                                 <Route path="/movies/topRated" element={<TopRatedMoviesPage/>}/>
                                 <Route path="/movies/popular" element={<PopularMoviesPage/>}/>
