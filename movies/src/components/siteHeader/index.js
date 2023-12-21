@@ -29,7 +29,7 @@ const SiteHeader = ({history}) => {
 
     const navigate = useNavigate();
     const {isAuthenticated, userName, logout} = useContext(AuthContext);
-
+    const movieContext = useContext(MoviesContext);
     const menuOptions = [
         {label: "Home", path: "/"},
         {label: "ActorHome", path: "/actors"},
@@ -61,6 +61,10 @@ const SiteHeader = ({history}) => {
     };
 
     const handlePersonalMenuClick = (event) => {
+        if (isAuthenticated){
+            console.log('playlist1',movieContext.playlist)
+            movieContext.loadProfile();
+        }
         setPersonalMenuAnchorEl(event.currentTarget);
     };
     const handleUserMenuClick = (event) => {

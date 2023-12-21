@@ -55,7 +55,7 @@ async function googleUser(req, res) {
         await User.create(req.body);
         user = await User.findByUserName(req.body.username);
     }
-    res.status(202).json({success: true,userId: user._id, msg: 'User successfully created.'});
+    res.status(202).json({success: true, userId: user._id, msg: 'User successfully created.'});
 }
 
 async function registerUser(req, res) {
@@ -81,6 +81,21 @@ async function authenticateUser(req, res) {
         res.status(401).json({success: false, msg: 'Wrong password.'});
     }
 }
+
+router.get('/playlist/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+        res.status(200).json({ playlist: user.playlist });
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ msg: "Error fetching user" });
+    }
+});
 
 router.post('/playlist/:userId', async (req, res) => {
     try {

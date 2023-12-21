@@ -1,11 +1,16 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {addToPlaylist as apiAddToPlaylist} from "../api/movies-api";
-import { useAuth } from './useAuth';
+import {
+    addToPlaylist as apiAddToPlaylist,
+    getPlaylist,
+    removeFromPlaylist as apiRemoveFromPlaylist
+} from "../api/movies-api";
+import {useAuth} from './useAuth';
+
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
-    const { userId } = useAuth();
+    const {userId} = useAuth();
     const [favorites, setFavorites] = useState([])
     const [myReviews, setMyReviews] = useState({})
     const [playlist, setPlaylist] = useState([]);
@@ -17,7 +22,11 @@ const MoviesContextProvider = (props) => {
         setPage(value);
     };
 
-
+    const loadProfile = () => {
+        getAllPlaylist();
+        // getAllFavorites();
+        // getAllFollows();
+    }
     const addToFavorites = (movie) => {
         let newFavorites = [];
         if (!favorites.includes(movie.id)) {
@@ -50,9 +59,16 @@ const MoviesContextProvider = (props) => {
             (aId) => aId !== actor.id
         ))
     };
+    const getAllPlaylist = async () => {
+        const result = await getPlaylist(userId);
+        let newPlaylist = [];
+        newPlaylist = result.playlist == null ? [] : result.playlist;
+        setPlaylist(newPlaylist);
+    }
     const addToPlaylist = async (movie) => {
         if (!playlist.includes(movie.id)) {
             try {
+                console.log(userId);
                 const result = await apiAddToPlaylist(userId, movie.id);
                 console.log(result);
                 setPlaylist(playlist => [...playlist, movie.id]);
@@ -62,7 +78,7 @@ const MoviesContextProvider = (props) => {
         }
     }
     const removeFromPlaylist = (movie) => {
-
+        apiRemoveFromPlaylist(userId, movie.id);
         setPlaylist(playlist.filter(
             (mId) => mId !== movie.id
         ))
@@ -84,6 +100,8 @@ const MoviesContextProvider = (props) => {
                 error,
                 page,
                 handlePageChange,
+                getAllPlaylist,
+                loadProfile,
             }}
         >
             {props.children}

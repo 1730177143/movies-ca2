@@ -33,6 +33,7 @@ const AuthContextProvider = (props) => {
         const result = await login(username, password);
         console.log(result);
         if (result.token) {
+            console.log(result.userId);
             setToken(result.token);
             setUserId(result.userId);
             setIsAuthenticated(true);
@@ -52,8 +53,8 @@ const AuthContextProvider = (props) => {
             setError(result.msg);
         }
     };
-    const byGoogleLogin = async (username,  email) => {
-        const result = await loginByGoogle(username,  email,'google@123')
+    const byGoogleLogin = async (username, email) => {
+        const result = await loginByGoogle(username, email, 'google@123')
         console.log(result);
         if (result.success) {
             setUserId(result.userId);
@@ -83,8 +84,8 @@ const AuthContextProvider = (props) => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            if (result){
-               await byGoogleLogin(user.displayName+'_google',user.email)
+            if (result) {
+                await byGoogleLogin(user.displayName + '_google', user.email)
             }
             setUserName(user.displayName)
             setEmail(user.email);
@@ -138,7 +139,7 @@ const AuthContextProvider = (props) => {
             if (isAuthenticated) {
                 navigate("/", {replace: true});
             }
-
+            console.log(userId);
         } catch (error) {
             if (error.code === "auth/invalid-login-credentials") {
                 setError("This email has already been registered by Google.");
@@ -177,6 +178,7 @@ const AuthContextProvider = (props) => {
                 error,
                 registered,
                 setRegistered,
+                userId,
             }}
         >
             {props.children}

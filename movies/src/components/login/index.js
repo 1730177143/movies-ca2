@@ -4,15 +4,20 @@ import { Navigate,useLocation, useNavigate} from "react-router-dom";
 import { AuthContext } from '../../contexts/authContext';
 import GoogleIcon from '@mui/icons-material/Google';
 import Alert from "@mui/material/Alert";
+import {MoviesContext} from "../../contexts/moviesContext";
 
 function Login() {
+    const movieContext = useContext(MoviesContext);
     const context = useContext(AuthContext);
-    const {userName,password, error} = useContext(AuthContext);
+    const {userName,password, error,isAuthenticated} = useContext(AuthContext);
     const navigate = useNavigate();
     const registerButton = () => {
         navigate("/register", {replace: true});
     }
-
+    if (isAuthenticated === true) {
+        movieContext.loadProfile();
+        return <Navigate to="/"/>;
+    }
     return (
         <Grid container style={{minHeight: '100vh'}}>
             <Grid item xs={12} sm={6} md={4} style={{margin: 'auto'}}>
