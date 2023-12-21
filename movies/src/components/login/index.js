@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Button, TextField, Grid, Paper, Typography} from '@mui/material';
 import { Navigate,useLocation, useNavigate} from "react-router-dom";
-import {MoviesContext} from "../../contexts/moviesContext";
 import { AuthContext } from '../../contexts/authContext';
 import GoogleIcon from '@mui/icons-material/Google';
 import Alert from "@mui/material/Alert";

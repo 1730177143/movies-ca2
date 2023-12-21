@@ -1,93 +1,23 @@
-import React, {useEffect, useState} from "react";
-import {auth} from "../firebase/firebase-config";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    GoogleAuthProvider
-} from "firebase/auth";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-
+import {addToPlaylist as apiAddToPlaylist} from "../api/movies-api";
+import { useAuth } from './useAuth';
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
+    const { userId } = useAuth();
     const [favorites, setFavorites] = useState([])
     const [myReviews, setMyReviews] = useState({})
     const [playlist, setPlaylist] = useState([]);
     const [follows, setFollows] = useState([])
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(false);
     const [page, setPage] = React.useState(1);
     const handlePageChange = (event, value) => {
         setPage(value);
     };
-    const getEmail = (email) => {
-        setEmail(email);
 
-    };
-    const getPassword = (password) => {
-        setPassword(password);
-    }
-    const googleLogin = async () => {
-        setError('');
-        const provider = new GoogleAuthProvider();
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            setEmail(user.email);
-            setIsLogin(true);
-            console.log("Login in success,user information:", user);
-            navigate("/", {replace: true});
-        } catch (error) {
-            console.error("Google login in failed:", error);
-        }
-    }
-    const handleRegister = async () => {
-        try {
-            setError('');
-            await createUserWithEmailAndPassword(auth, email, password);
 
-            navigate("/login", {replace: true});
-        } catch (error) {
-            if (error.code === 'auth/email-already-in-use') {
-                setError("This email has already been registered.");
-                console.error("This email has already been registered.");
-            } else if (error.code === 'auth/weak-password') {
-                setError("Password should be at least 6 characters");
-                console.error("Password should be at least 6 characters");
-            } else {
-                console.error("Authentication failed:", error);
-            }
-        }
-    };
-    const handleLogin = async () => {
-        try {
-            setError('');
-            await signInWithEmailAndPassword(auth, email, password);
-            setIsLogin(true);
-            navigate("/", {replace: true});
-
-        } catch (error) {
-            if (error.code === "auth/invalid-login-credentials") {
-                setError("This email has already been registered by Google.");
-                console.error("This email has already been registered by Google.");
-            } else {
-                console.error("Authentication failed:", error);
-            }
-        }
-    };
-    const logout = async () => {
-        try {
-            await auth.signOut();
-            setIsLogin(false);
-
-        } catch (error) {
-            console.error("Authentication failed:", error);
-        }
-    }
     const addToFavorites = (movie) => {
         let newFavorites = [];
         if (!favorites.includes(movie.id)) {
@@ -120,15 +50,17 @@ const MoviesContextProvider = (props) => {
             (aId) => aId !== actor.id
         ))
     };
-    const addToPlaylist = (movie) => {
-        let newToPlay = [];
+    const addToPlaylist = async (movie) => {
         if (!playlist.includes(movie.id)) {
-            newToPlay = [...playlist, movie.id];
-        } else {
-            newToPlay = [...playlist];
+            try {
+                const result = await apiAddToPlaylist(userId, movie.id);
+                console.log(result);
+                setPlaylist(playlist => [...playlist, movie.id]);
+            } catch (error) {
+                console.error(error);
+            }
         }
-        setPlaylist(newToPlay);
-    };
+    }
     const removeFromPlaylist = (movie) => {
 
         setPlaylist(playlist.filter(
@@ -151,6 +83,7 @@ const MoviesContextProvider = (props) => {
                 removeFromFollows,
                 error,
                 page,
+                handlePageChange,
             }}
         >
             {props.children}

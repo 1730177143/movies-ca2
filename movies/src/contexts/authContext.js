@@ -1,5 +1,5 @@
 import React, {useState, createContext} from "react";
-import {login, signup} from "../api/movies-api";
+import {login, signup, loginByGoogle} from "../api/movies-api";
 import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
@@ -22,6 +22,7 @@ const AuthContextProvider = (props) => {
     const [error, setError] = useState(null);
     const [passwordAgain, setPasswordAgain] = useState("");
     const [registered, setRegistered] = useState(false);
+    const [userId, setUserId] = useState(null);
     //Function to put JWT token in local storage.
     const setToken = (data) => {
         localStorage.setItem("token", data);
@@ -30,19 +31,36 @@ const AuthContextProvider = (props) => {
 
     const authenticate = async (username, password) => {
         const result = await login(username, password);
+        console.log(result);
         if (result.token) {
-            setToken(result.token)
+            setToken(result.token);
+            setUserId(result.userId);
             setIsAuthenticated(true);
             setUserName(username);
+        } else {
+            setError(result.msg);
         }
     };
 
     const register = async (username, password, email) => {
         const result = await signup(username, password, email);
-        console.log(result.code);
-        return (result.code === 201);
+        console.log(result);
+        if (result.success) {
+            setUserId(result.userId);
+            setIsAuthenticated(true);
+        } else {
+            setError(result.msg);
+        }
     };
-
+    const byGoogleLogin = async (username,  email) => {
+        const result = await loginByGoogle(username,  email,'google@123')
+        console.log(result);
+        if (result.success) {
+            setUserId(result.userId);
+        } else {
+            setError(result.msg);
+        }
+    }
     const signout = () => {
         setTimeout(() => setIsAuthenticated(false), 100);
     }
@@ -65,6 +83,10 @@ const AuthContextProvider = (props) => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
+            if (result){
+               await byGoogleLogin(user.displayName+'_google',user.email)
+            }
+            setUserName(user.displayName)
             setEmail(user.email);
             setIsAuthenticated(true);
             console.log("Login in success,user information:", user);
@@ -73,7 +95,7 @@ const AuthContextProvider = (props) => {
             console.error("Google login in failed:", error);
         }
     }
-    const handleRegister =  async () => {
+    const handleRegister = async () => {
         try {
             setError(null);
             let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -90,11 +112,8 @@ const AuthContextProvider = (props) => {
                 throw new Error("Invalid password format.");
             }
             await register(userName, password, email);
-            setRegistered(true)
             if (registered) {
                 navigate("/login", {replace: true});
-            } else {
-                throw new Error("Registration failed. User's name has been used.");
             }
 
         } catch (error) {
@@ -116,8 +135,9 @@ const AuthContextProvider = (props) => {
         try {
             setError(null);
             await authenticate(userName, password);
-            setIsAuthenticated(true);
-            navigate("/", {replace: true});
+            if (isAuthenticated) {
+                navigate("/", {replace: true});
+            }
 
         } catch (error) {
             if (error.code === "auth/invalid-login-credentials") {
@@ -154,7 +174,9 @@ const AuthContextProvider = (props) => {
                 handleRegister,
                 getUserName,
                 getPasswordAgain,
-                error
+                error,
+                registered,
+                setRegistered,
             }}
         >
             {props.children}

@@ -14,11 +14,13 @@ router.get('/', async (req, res) => {
 
 router.post('/', asyncHandler(async (req, res) => {
     try {
-        if (!req.body.username || !req.body.password||!req.body.email) {
-            return res.status(400).json({success: false, msg: 'Username, email and password are required.'});
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).json({success: false, msg: 'Username and password are required.'});
         }
         if (req.query.action === 'register') {
             await registerUser(req, res);
+        } else if (req.query.action === 'googleLogin') {
+            await googleUser(req, res);
         } else {
             await authenticateUser(req, res);
         }
@@ -47,8 +49,20 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+async function googleUser(req, res) {
+    let user = await User.findByUserName(req.body.username);
+    if (!user) {
+        await User.create(req.body);
+        user = await User.findByUserName(req.body.username);
+    }
+    res.status(202).json({success: true,userId: user._id, msg: 'User successfully created.'});
+}
+
 async function registerUser(req, res) {
-    // Add input validation logic here
+    const user = await User.findByUserName(req.body.username);
+    if (user) {
+        return res.status(401).json({success: false, msg: 'Registration failed. User\'s name has been used.'});
+    }
     await User.create(req.body);
     res.status(201).json({success: true, msg: 'User successfully created.'});
 }
@@ -62,7 +76,7 @@ async function authenticateUser(req, res) {
     const isMatch = await user.comparePassword(req.body.password);
     if (isMatch) {
         const token = jwt.sign({username: user.username}, jwtSecret);
-        res.status(200).json({success: true, token: 'Bearer ' + token});
+        res.status(200).json({success: true, userId: user._id, token: 'Bearer ' + token});
     } else {
         res.status(401).json({success: false, msg: 'Wrong password.'});
     }
