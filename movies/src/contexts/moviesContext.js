@@ -3,7 +3,10 @@ import {useNavigate} from "react-router-dom";
 import {
     addToPlaylist as apiAddToPlaylist,
     getPlaylist,
-    removeFromPlaylist as apiRemoveFromPlaylist
+    removeFromPlaylist as apiRemoveFromPlaylist,
+    addToFavourites as apiAddToFavourites,
+    removeFromFavourites as apiRemoveFromFavourites,
+    getFavourites,
 } from "../api/movies-api";
 import {useAuth} from './useAuth';
 
@@ -24,27 +27,34 @@ const MoviesContextProvider = (props) => {
 
     const loadProfile = () => {
         getAllPlaylist();
-        // getAllFavorites();
+        getAllFavorites();
         // getAllFollows();
     }
-    const addToFavorites = (movie) => {
-        let newFavorites = [];
+    const getAllFavorites = async () => {
+        const result = await getFavourites(userId);
+        await setFavorites(result.favourites);
+        console.log('getAllFavorites', favorites);
+    }
+    const addToFavorites = async (movie) => {
         if (!favorites.includes(movie.id)) {
-            newFavorites = [...favorites, movie.id];
-        } else {
-            newFavorites = [...favorites];
+            try {
+                await apiAddToFavourites(userId, movie.id);
+                await getAllFavorites()
+            } catch (error) {
+                console.error(error);
+            }
         }
-        setFavorites(newFavorites)
+    };
+
+    const removeFromFavorites = async (movie) => {
+        await apiRemoveFromFavourites(userId, movie.id);
+        await getAllFavorites();
     };
     const addReview = (movie, review) => {
         setMyReviews({...myReviews, [movie.id]: review})
     };
 
-    const removeFromFavorites = (movie) => {
-        setFavorites(favorites.filter(
-            (mId) => mId !== movie.id
-        ))
-    };
+
     const addToFollows = (actor) => {
         let newFollows = [];
         if (!follows.includes(actor.id)) {
@@ -61,27 +71,22 @@ const MoviesContextProvider = (props) => {
     };
     const getAllPlaylist = async () => {
         const result = await getPlaylist(userId);
-        let newPlaylist = [];
-        newPlaylist = result.playlist == null ? [] : result.playlist;
-        setPlaylist(newPlaylist);
+        await setPlaylist(result.playlist);
+        console.log('getAllPlaylist', playlist)
     }
     const addToPlaylist = async (movie) => {
         if (!playlist.includes(movie.id)) {
             try {
-                console.log(userId);
-                const result = await apiAddToPlaylist(userId, movie.id);
-                console.log(result);
-                setPlaylist(playlist => [...playlist, movie.id]);
+                await apiAddToPlaylist(userId, movie.id);
+                await getAllPlaylist()
             } catch (error) {
                 console.error(error);
             }
         }
     }
-    const removeFromPlaylist = (movie) => {
-        apiRemoveFromPlaylist(userId, movie.id);
-        setPlaylist(playlist.filter(
-            (mId) => mId !== movie.id
-        ))
+    const removeFromPlaylist = async (movie) => {
+        await apiRemoveFromPlaylist(userId, movie.id);
+        await getAllPlaylist();
     };
 
     return (
