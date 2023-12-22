@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react';
-import {Button, TextField, Grid, Paper, Typography} from '@mui/material';
-import { Navigate,useLocation, useNavigate} from "react-router-dom";
-import { AuthContext } from '../../contexts/authContext';
+import React, {useContext} from 'react';
+import {Button, Grid, Paper, TextField, Typography} from '@mui/material';
+import {Navigate, useNavigate} from "react-router-dom";
+import {AuthContext} from '../../contexts/authContext';
 import GoogleIcon from '@mui/icons-material/Google';
 import Alert from "@mui/material/Alert";
 import {MoviesContext} from "../../contexts/moviesContext";
@@ -9,12 +9,16 @@ import {MoviesContext} from "../../contexts/moviesContext";
 function Login() {
     const movieContext = useContext(MoviesContext);
     const context = useContext(AuthContext);
-    const {userName,password, error,isAuthenticated} = useContext(AuthContext);
+    const {userName, password, error, isAuthenticated,registered} = useContext(AuthContext);
     const navigate = useNavigate();
     const registerButton = () => {
         navigate("/register", {replace: true});
     }
+    if (registered) {
+        context.setRegistered(false);
+    }
     if (isAuthenticated === true) {
+
         movieContext.loadProfile();
         return <Navigate to="/"/>;
     }
@@ -64,12 +68,12 @@ function Login() {
                             onClick={(e) => context.googleLogin()}
                         /></Button>
                         No account ? <Button type="register"
-                                           color="primary"
-                                           variant="contained"
+                                             color="primary"
+                                             variant="contained"
 
-                                           onClick={() => {
-                                               registerButton()
-                                           }}>Sign in</Button>
+                                             onClick={() => {
+                                                 registerButton()
+                                             }}>Sign in</Button>
                     </Typography>
                 </Paper>
             </Grid>
