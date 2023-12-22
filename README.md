@@ -4,50 +4,102 @@ Name: long liu
 
 ## Features.
 
-A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
+A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or
+modifications to existing features)
 
-+ Feature 1
-+ Feature 2
-+ Feature 3
-+ etc
++ login
++ google login
++ sign up
++ add to playlist
++ remove from playlist
++ get playlist
++ add to favorites
++ remove from favorites
++ get favorites
++ add to follows
++ remove from follows
++ get follows
++ get user
++ add reviews
++ get reviews
++ get reviews by movieId
++ get movie by id
++ get movies
++ get genres
++ get movie img
++ get upcoming movies
++ get popular movies
++ get top-rated movies
++ get trending movies
++ get recommendation movies
++ get similar movies
++ get Actors
++ get actor
++ get actor img
++ get credits
++ get movie credits
 
 ## Setup requirements.
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
+Install node.js
+in the movies folder, Open the terminal and run`npm install`
+
+in the movies app folder, Open the terminal and run `npm install`
+
+This will install all the necessary dependencies for the project.
 
 ## API Configuration
 
-Describe any configuration that needs to take place before running the API. For example, creating an `.env` file and what variables to put in it. Give an example of how this might be done.
-
-REMEMBER: DON'T PUT YOUR OWN USERNAMES/PASSWORDS/AUTH KEYS IN THE README OR ON GITHUB, just placeholders as indicated below:
-
+creating an `.env `file and what variables to put in it.
 ______________________
+example:
+
+```
 NODEENV=development
+
 PORT=8080
-HOST=
-mongoDB=YourMongoURL
-seedDb=true
+
+HOST=localhost
+
+mongoDB=YourMongoURL 
+
+REACT_APP_TMDB_KEY=Your REACT_APP_TMDB_KEY
+
 secret=YourJWTSecret
+```
+
 ______________________
 
 ## API Design
-Give an overview of your web API design, perhaps similar to the following:
 
-- /api/movies | GET | Gets a list of movies
-- /api/movies/{movieid} | GET | Gets a single movie
-- /api/movies/{movieid}/reviews | GET | Get all reviews for movie
-- /api/movies/{movieid}/reviews | POST | Create a new review for Movie
 
-If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
+
+Run the backend and open the link http://localhost:8080/api-docs, check the API documentation.
+
+Alternatively, open the `movies-ca2.postman_collection.yaml` file in the IDE.
+
 
 ## Security and Authentication
 
-Give details of authentication/security implemented on the API (e.g. passport/sessions). Indicate which routes are protected.
+These routes are protected.
+
+Login is required to access these routes.
+
+``` js
+<Route element={<ProtectedRoutes/>}>
+    <Route path="/movies/favorites" element={<FavoriteMoviesPage/>}/>
+    <Route path="/actors/follows" element={<FollowsPage/>}/>
+    <Route path="/movies/playlist" element={<PlaylistPage/>}/>
+    <Route path="/reviews/form" element={<AddMovieReviewPage/>}/>
+</Route>
+```
 
 ## Integrating with React App
 
-Describe how you integrated your React app with the API. List the views that use your Web API instead of the TMDB API. Describe any other updates to the React app from Assignment One.
+All functions that used to access TMDB on the front-end are no longer directly accessible to TMDB. Instead, it requests from the backend, which accesses TMDB and returns the result to the frontend.
+
+The front-end has added a comment display page to display the added comments. Modified the login and registration pages to save user data to the backend.
 
 ## Independent learning (if relevant)
 
-Briefly explain any non-standard features developed for the app.   
+Local swagger UI deployment
