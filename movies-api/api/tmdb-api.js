@@ -163,7 +163,7 @@ export const getActors =async (page) => {
     try {
         console.log('page',page)
         const response = await fetch(
-            `https://api.themoviedb.org/3/person/popular?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+            `https://api.themoviedb.org/3/person/popular?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=${page}`
         );
         if (!response.ok) {
             throw new Error(response.json().message);

@@ -1,0 +1,919 @@
+openapi: 3.1.0
+info:
+  title: movies-ca2
+  contact: {}
+  version: '1.0'
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+- url: http://localhost:8080/api
+  variables: {}
+paths:
+  /users:
+    get:
+      tags:
+      - user
+      summary: localhost:8080/api/users
+      operationId: localhost:8080/api/users
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - user
+      summary: localhost:8080/api/users?action=register
+      operationId: localhost:8080/api/users?action=register
+      parameters:
+      - name: action
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          examples:
+          - register
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersactionregisterrequest'
+              - examples:
+                - username: user1234
+                  email: 20104729@mail.wit.ie
+                  password: test123@
+              contentMediaType: application/json
+            example:
+              username: user1234
+              email: 20104729@mail.wit.ie
+              password: test123@
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /users/{id}:
+    put:
+      tags:
+      - user
+      summary: localhost:8080/api/users/:id
+      operationId: localhost:8080/api/users/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersidrequest'
+              - examples:
+                - username: user1
+                  password: test1234@
+              contentMediaType: application/json
+            example:
+              username: user1
+              password: test1234@
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /users/playlist/{id}:
+    post:
+      tags:
+      - user
+      summary: localhost:8080/api/users/playlist/:id
+      operationId: localhost:8080/api/users/playlist/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersplaylistidrequest'
+              - examples:
+                - movieId: 787699
+              contentMediaType: application/json
+            example:
+              movieId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - user
+      summary: localhost:8080/api/users/playlist/:id1
+      operationId: localhost:8080/api/users/playlist/:id1
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersplaylistidrequest'
+              - examples:
+                - movieId: 787699
+              contentMediaType: application/json
+            example:
+              movieId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+      - user
+      summary: localhost:8080/api/users/playlist/:id
+      operationId: Getlocalhost:8080/api/users/playlist/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /users/favourites/{id}:
+    get:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id
+      operationId: localhost:8080/api/users/favourites/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id
+      operationId: Postlocalhost:8080/api/users/favourites/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest'
+              - examples:
+                - movieId: 787699
+              contentMediaType: application/json
+            example:
+              movieId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id1
+      operationId: localhost:8080/api/users/favourites/:id1
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest'
+              - examples:
+                - movieId: 787699
+              contentMediaType: application/json
+            example:
+              movieId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /users/follows/{id}:
+    get:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id1
+      operationId: Getlocalhost:8080/api/users/favourites/:id1
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id2
+      operationId: localhost:8080/api/users/favourites/:id2
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest2'
+              - examples:
+                - personId: 787699
+              contentMediaType: application/json
+            example:
+              personId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - user
+      summary: localhost:8080/api/users/favourites/:id3
+      operationId: localhost:8080/api/users/favourites/:id3
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          examples:
+          - 6584f40d9e08a5b813448f0f
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest2'
+              - examples:
+                - personId: 787699
+              contentMediaType: application/json
+            example:
+              personId: 787699
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /reviews:
+    get:
+      tags:
+      - reviews
+      summary: localhost:8080/api/reviews
+      operationId: localhost:8080/api/reviews
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - reviews
+      summary: localhost:8080/api/reviews
+      operationId: Postlocalhost:8080/api/reviews
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/localhost8080apireviewsrequest'
+              - examples:
+                - author: user21
+                  review: asfsfsmwwofieowfvdvsvsvdbbbbbbbbbbbbbbbbbbbwojeofjwfew
+                  rating: 4
+                  movieId: 572802
+              contentMediaType: application/json
+            example:
+              author: user21
+              review: asfsfsmwwofieowfvdvsvsvdbbbbbbbbbbbbbbbbbbbwojeofjwfew
+              rating: 4
+              movieId: 572802
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /reviews/{id}:
+    get:
+      tags:
+      - reviews
+      summary: localhost:8080/api/reviews/:id
+      operationId: localhost:8080/api/reviews/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 572802
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb?page=1
+      operationId: http://localhost:8080/api/movies/tmdb?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/popular:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/popular?page=1
+      operationId: http://localhost:8080/api/movies/tmdb/popular?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/toprated:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/toprated?page=1
+      operationId: http://localhost:8080/api/movies/tmdb/toprated?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/trending:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/trending?page=1
+      operationId: http://localhost:8080/api/movies/tmdb/trending?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/upcoming:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/upcoming?page=1
+      operationId: http://localhost:8080/api/movies/tmdb/upcoming?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/genres:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/genres
+      operationId: http://localhost:8080/api/movies/tmdb/genres
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/:id
+      operationId: http://localhost:8080/api/movies/tmdb/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/img/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/img/:id
+      operationId: http://localhost:8080/api/movies/tmdb/img/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/reviews/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/reviews/:id
+      operationId: http://localhost:8080/api/movies/tmdb/reviews/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/recommendations/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/recommendations/:id
+      operationId: http://localhost:8080/api/movies/tmdb/recommendations/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/similar/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/similar/:id
+      operationId: http://localhost:8080/api/movies/tmdb/similar/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/actors:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/actors?page=1
+      operationId: http://localhost:8080/api/movies/tmdb/actors?page=1
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/actor/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/actor/:id
+      operationId: http://localhost:8080/api/movies/tmdb/actor/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1548301
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/actor/img/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/actor/:id1
+      operationId: http://localhost:8080/api/movies/tmdb/actor/:id1
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1548301
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/credits/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/credits/:id
+      operationId: http://localhost:8080/api/movies/tmdb/credits/:id
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 787699
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+  /movies/tmdb/movieCredits/{id}:
+    get:
+      tags:
+      - movies
+      summary: http://localhost:8080/api/movies/tmdb/actor/:id2
+      operationId: http://localhost:8080/api/movies/tmdb/actor/:id2
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1548301
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    parameters: []
+components:
+  schemas:
+    localhost8080apiusersactionregisterrequest:
+      title: localhost8080apiusersactionregisterrequest
+      required:
+      - username
+      - email
+      - password
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      examples:
+      - username: user1234
+        email: 20104729@mail.wit.ie
+        password: test123@
+    localhost8080apiusersactiongoogleLoginRequest:
+      title: localhost8080apiusersactiongoogleLoginRequest
+      required:
+      - username
+      - email
+      - password
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      examples:
+      - username: userg
+        email: 20104729@mail.wit.ie
+        password: google@123
+    localhost8080apiusersrequest:
+      title: localhost8080apiusersrequest
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      examples:
+      - username: user1
+        password: test123@
+    localhost8080apiusersidrequest:
+      title: localhost8080apiusersidrequest
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      examples:
+      - username: user1
+        password: test1234@
+    localhost8080apiusersplaylistidrequest:
+      title: localhost8080apiusersplaylistidrequest
+      required:
+      - movieId
+      type: object
+      properties:
+        movieId:
+          type: integer
+          contentEncoding: int32
+      examples:
+      - movieId: 787699
+    localhost8080apiusersfavouritesidrequest:
+      title: localhost8080apiusersfavouritesidrequest
+      required:
+      - movieId
+      type: object
+      properties:
+        movieId:
+          type: integer
+          contentEncoding: int32
+      examples:
+      - movieId: 787699
+    localhost8080apiusersfavouritesidrequest2:
+      title: localhost8080apiusersfavouritesidrequest2
+      required:
+      - personId
+      type: object
+      properties:
+        personId:
+          type: integer
+          contentEncoding: int32
+      examples:
+      - personId: 787699
+    localhost8080apireviewsrequest:
+      title: localhost8080apireviewsrequest
+      required:
+      - author
+      - review
+      - rating
+      - movieId
+      type: object
+      properties:
+        author:
+          type: string
+        review:
+          type: string
+        rating:
+          type: integer
+          contentEncoding: int32
+        movieId:
+          type: integer
+          contentEncoding: int32
+      examples:
+      - author: user21
+        review: asfsfsmwwofieowfvdvsvsvdbbbbbbbbbbbbbbbbbbbwojeofjwfew
+        rating: 4
+        movieId: 572802
+tags:
+- name: user
+- name: reviews
+- name: movies

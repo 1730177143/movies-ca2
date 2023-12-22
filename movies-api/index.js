@@ -11,7 +11,15 @@ import authenticate from './authenticate';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT; 
+const port = process.env.PORT;
+
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./movies-ca2.postman_collection.yaml');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
 
 app.use(cors());
 app.use(express.json());

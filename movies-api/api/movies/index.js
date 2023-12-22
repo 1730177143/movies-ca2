@@ -22,27 +22,27 @@ import {
 const router = express.Router();
 
 router.get('/tmdb', asyncHandler(async (req, res) => {
-    let {page = 1} = req.query
+    let {page = 1} = req.query.page
     const upcomingMovies = await getMovies(page);
     res.status(200).json(upcomingMovies);
 }));
 router.get('/tmdb/popular', asyncHandler(async (req, res) => {
-    let {page = 1} = req.query
+    let {page = 1} = req.query.page
     const upcomingMovies = await getPopular(page);
     res.status(200).json(upcomingMovies);
 }));
 router.get('/tmdb/toprated', asyncHandler(async (req, res) => {
-    let {page = 1} = req.query
+    let {page = 1} = req.query.page
     const upcomingMovies = await getTopRated(page);
     res.status(200).json(upcomingMovies);
 }));
 router.get('/tmdb/trending', asyncHandler(async (req, res) => {
-    let {page = 1} = req.query
+    let {page = 1} = req.query.page
     const upcomingMovies = await getTrending(page);
     res.status(200).json(upcomingMovies);
 }));
 router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
-    let {page = 1} = req.query
+    let {page = 1} = req.query.page
     const upcomingMovies = await getUpcomingMovies(page);
     res.status(200).json(upcomingMovies);
 }));
@@ -98,7 +98,7 @@ router.get('/tmdb/similar/:id', asyncHandler(async (req, res) => {
 }));
 
 router.get('/tmdb/actors',asyncHandler( async (req, res) => {
-    let page  = req.query.page;
+    let {page = 1}= req.query.page;
     console.log('page0',page);
     const actors = await getActors(page);
     res.status(200).json(actors);
