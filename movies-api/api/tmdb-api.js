@@ -161,7 +161,6 @@ export const getSimilar =async (id) => {
 };
 export const getActors =async (page) => {
     try {
-        console.log('page',page)
         const response = await fetch(
             `https://api.themoviedb.org/3/person/popular?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=${page}`
         );

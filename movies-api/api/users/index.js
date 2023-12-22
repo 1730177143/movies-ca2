@@ -88,12 +88,12 @@ router.get('/playlist/:userId', async (req, res) => {
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({msg: "User not found"});
         }
-        res.status(200).json({ playlist: user.playlist });
+        res.status(200).json({playlist: user.playlist});
     } catch (error) {
         console.error("Error fetching user:", error);
-        res.status(500).json({ msg: "Error fetching user" });
+        res.status(500).json({msg: "Error fetching user"});
     }
 });
 
@@ -104,18 +104,18 @@ router.post('/playlist/:userId', async (req, res) => {
         if (!movieId) {
             return res.status(400).json({success: false, message: 'Movie ID is required.'});
         }
-        const user = await User.findById(userId);
-        if (user) {
-            await user.addToPlaylist(movieId);
-            res.status(200).json({success: true, message: 'Movie added to playlist.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$addToSet: {playlist: movieId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Movie added to playlist.'});
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});
     }
-});
+})
+;
 router.delete('/playlist/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -123,13 +123,12 @@ router.delete('/playlist/:userId', async (req, res) => {
         if (!movieId) {
             return res.status(400).json({success: false, message: 'Movie ID is required.'});
         }
-        const user = await User.findById(userId);
-        if (user) {
-            await user.removeFromPlaylist(movieId);
-            res.status(200).json({success: true, message: 'Movie removed from playlist.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$pull: {playlist: movieId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Movie removed from playlist.'});
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});
@@ -141,12 +140,12 @@ router.get('/favourites/:userId', async (req, res) => {
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({msg: "User not found"});
         }
-        res.status(200).json({ favourites: user.favourites });
+        res.status(200).json({favourites: user.favourites});
     } catch (error) {
         console.error("Error fetching user:", error);
-        res.status(500).json({ msg: "Error fetching user" });
+        res.status(500).json({msg: "Error fetching user"});
     }
 });
 router.post('/favourites/:userId', async (req, res) => {
@@ -156,13 +155,13 @@ router.post('/favourites/:userId', async (req, res) => {
         if (!movieId) {
             return res.status(400).json({success: false, message: 'Movie ID is required.'});
         }
-        const user = await User.findById(userId);
-        if (user) {
-            await user.addToFavourites(movieId);
-            res.status(200).json({success: true, message: 'Movie added to favourites.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$addToSet: {favourites: movieId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Movie added to favourites.'});
+
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});
@@ -175,13 +174,12 @@ router.delete('/favourites/:userId', async (req, res) => {
         if (!movieId) {
             return res.status(400).json({success: false, message: 'Movie ID is required.'});
         }
-        const user = await User.findById(userId);
-        if (user) {
-            await user.removeFromFavourites(movieId);
-            res.status(200).json({success: true, message: 'Movie removed from favourites.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$pull: {favourites: movieId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Movie removed from favourites.'});
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});
@@ -194,12 +192,12 @@ router.get('/follows/:userId', async (req, res) => {
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({msg: "User not found"});
         }
-        res.status(200).json({ follows: user.follows });
+        res.status(200).json({follows: user.follows});
     } catch (error) {
         console.error("Error fetching user:", error);
-        res.status(500).json({ msg: "Error fetching user" });
+        res.status(500).json({msg: "Error fetching user"});
     }
 });
 router.post('/follows/:userId', async (req, res) => {
@@ -209,13 +207,13 @@ router.post('/follows/:userId', async (req, res) => {
         if (!personId) {
             return res.status(400).json({success: false, message: 'Person ID is required.'});
         }
-        const user = await User.findById(userId);
-        if (user) {
-            await user.followPerson(personId);
-            res.status(200).json({success: true, message: 'Person followed.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$addToSet: {follows: personId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Person followed.'});
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});
@@ -229,12 +227,12 @@ router.delete('/follows/:userId', async (req, res) => {
             return res.status(400).json({success: false, message: 'Person ID is required.'});
         }
         const user = await User.findById(userId);
-        if (user) {
-            await user.unfollowPerson(personId);
-            res.status(200).json({success: true, message: 'Person unfollowed.'});
-        } else {
-            res.status(404).json({success: false, message: 'User not found.'});
-        }
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$pull: {follows: personId}},
+            {new: true}
+        );
+        res.status(200).json({success: true, message: 'Person unfollowed.'});
     } catch (error) {
         console.error(error);
         res.status(500).json({success: false, message: 'Internal server error.'});

@@ -101,7 +101,11 @@ router.get('/tmdb/actors',asyncHandler( async (req, res) => {
     let {page = 1}= req.query.page;
     console.log('page0',page);
     const actors = await getActors(page);
-    res.status(200).json(actors);
+    if (actors) {
+        res.status(200).json(actors);
+    } else {
+        res.status(404).json({message: 'The actors you requested could not be found.', status_code: 404});
+    }
 }));
 
 router.get('/tmdb/actor/:id', asyncHandler(async (req, res) => {
