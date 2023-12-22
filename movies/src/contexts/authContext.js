@@ -47,8 +47,7 @@ const AuthContextProvider = (props) => {
         const result = await signup(username, password, email);
         console.log(result);
         if (result.success) {
-            setUserId(result.userId);
-            setIsAuthenticated(true);
+            setRegistered(true);
         } else {
             setError(result.msg);
         }
