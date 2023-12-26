@@ -219,7 +219,7 @@ paths:
         schema:
           type: string
           examples:
-          - 6584f40d9e08a5b813448f0f
+          - 6585b42591dedc22e769ce68
       requestBody:
         description: ''
         content:
@@ -276,8 +276,8 @@ paths:
     get:
       tags:
       - user
-      summary: localhost:8080/api/users/favourites/:id1
-      operationId: Getlocalhost:8080/api/users/favourites/:id1
+      summary: localhost:8080/api/users/follows/:id
+      operationId: localhost:8080/api/users/follows/:id
       parameters:
       - name: id
         in: path
@@ -296,8 +296,8 @@ paths:
     post:
       tags:
       - user
-      summary: localhost:8080/api/users/favourites/:id2
-      operationId: localhost:8080/api/users/favourites/:id2
+      summary: localhost:8080/api/users/follows/:id
+      operationId: Postlocalhost:8080/api/users/follows/:id
       parameters:
       - name: id
         in: path
@@ -314,7 +314,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest2'
+              - $ref: '#/components/schemas/localhost8080apiusersfollowsidrequest'
               - examples:
                 - personId: 787699
               contentMediaType: application/json
@@ -329,8 +329,8 @@ paths:
     delete:
       tags:
       - user
-      summary: localhost:8080/api/users/favourites/:id3
-      operationId: localhost:8080/api/users/favourites/:id3
+      summary: localhost:8080/api/users/follows/:id1
+      operationId: localhost:8080/api/users/follows/:id1
       parameters:
       - name: id
         in: path
@@ -347,7 +347,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/localhost8080apiusersfavouritesidrequest2'
+              - $ref: '#/components/schemas/localhost8080apiusersfollowsidrequest'
               - examples:
                 - personId: 787699
               contentMediaType: application/json
@@ -725,8 +725,8 @@ paths:
     get:
       tags:
       - movies
-      summary: http://localhost:8080/api/movies/tmdb/actor/:id1
-      operationId: http://localhost:8080/api/movies/tmdb/actor/:id1
+      summary: http://localhost:8080/api/movies/tmdb/actor/img/:id
+      operationId: http://localhost:8080/api/movies/tmdb/actor/img/:id
       parameters:
       - name: id
         in: path
@@ -771,8 +771,8 @@ paths:
     get:
       tags:
       - movies
-      summary: http://localhost:8080/api/movies/tmdb/actor/:id2
-      operationId: http://localhost:8080/api/movies/tmdb/actor/:id2
+      summary: http://localhost:8080/api/movies/tmdb/movieCredits/:id
+      operationId: http://localhost:8080/api/movies/tmdb/movieCredits/:id
       parameters:
       - name: id
         in: path
@@ -878,8 +878,8 @@ components:
           contentEncoding: int32
       examples:
       - movieId: 787699
-    localhost8080apiusersfavouritesidrequest2:
-      title: localhost8080apiusersfavouritesidrequest2
+    localhost8080apiusersfollowsidrequest:
+      title: localhost8080apiusersfollowsidrequest
       required:
       - personId
       type: object

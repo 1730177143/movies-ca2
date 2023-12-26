@@ -76,6 +76,8 @@ ______________________
 
 Run the backend and open the link http://localhost:8080/api-docs, check the API documentation.
 
+Open the link:https://app.swaggerhub.com/apis/20104729/movies-ca_2/1.0 to see API documentation on swagger hub.
+
 Alternatively, open the `movies-ca2.postman_collection.yaml` file in the IDE.
 
 
